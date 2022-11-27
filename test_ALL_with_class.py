@@ -3288,58 +3288,26 @@ class Announcements(tk.Frame):
 
         # #Countdown word (take from database)
         ctdwn_title = Label(self.countdown_frame, text ='Countdown \U0001F912', font = ('Rockwell', 20), bg='antique white' )
-        ctdwn_title.grid(row=1, column=0, sticky=W, pady=5, columnspan=2)
+        ctdwn_title.pack(side='top')
 
-        # #connect to event countdown db
-        # conn = sqlite3.connect('eventsystem.db')
-        # cursor=conn.cursor()
-        # r_set=cursor.execute('''SELECT EventName, Year, Month, Date FROM EventCountdown LIMIT 0,5''')
-        # r_set=cursor.fetchall()
-
-        # global countdown_details
-        # global countdown_label
-        # global EventCountdown
-        # global days_left
-        # i=0
-        # for EventCountdown in r_set:
-        #         countdown_details = Label(countdown_frame, text =EventCountdown[0]+' '+ str(EventCountdown[3])+'/'+str(EventCountdown[2])+'/'+str(EventCountdown[1]), font = ('Rockwell', 15), bg='antique white',pady=5 )
-        #         countdown_details.grid(row=i+2, column=0)
-        #         i+=1
-            
-        #         # event date
-        #         day_of_year = date(EventCountdown[1],EventCountdown[2],EventCountdown[3]).timetuple().tm_yday
-
-        #         # #Countdown
-        #         today=date.today()
-        #         todays_day_number = int(today.strftime("%j"))
-
-        #         # #Calculate days left
-        #         days_left = day_of_year - todays_day_number
-
-        #         # #Days left text
-        #         countdown_label = Label(countdown_frame, bg='antique white', text=f'({days_left} days left!)' , font=('Arial', 15, 'bold'), fg='red')
-        #         countdown_label.grid(row=i+1, column=1)
-        #         i+=1
         self.sub_countdown_frame = Frame(self.countdown_frame, bd=2, bg='antique white', relief=SOLID)
-        self.sub_countdown_frame.grid(row=2, column=0)
-        
+        self.sub_countdown_frame.pack(pady=50)
+
         def show_countdown():
             self.sub_countdown_frame.forget()
 
             self.sub_countdown_frame = Frame(self.countdown_frame, bd=2, bg='antique white', relief=SOLID)
-            self.sub_countdown_frame.grid(row=2, column=0)
+            self.sub_countdown_frame.pack(pady=10)
 
             conn = sqlite3.connect('eventsystem.db')
             cursor=conn.cursor()
             r_set=cursor.execute('''SELECT EventName, Year, Month, Date FROM EventCountdown LIMIT 0,5''')
             r_set=cursor.fetchall()
 
-
             i=0
             for EventCountdown in r_set:
                     countdown_details = Label(self.sub_countdown_frame, text =EventCountdown[0]+' '+ str(EventCountdown[3])+'/'+str(EventCountdown[2])+'/'+str(EventCountdown[1]), font = ('Rockwell', 15), bg='antique white',pady=5 )
                     countdown_details.grid(row=i+2, column=0)
-                    i+=1
                 
                     # event date
                     day_of_year = date(EventCountdown[1],EventCountdown[2],EventCountdown[3]).timetuple().tm_yday
@@ -3353,14 +3321,13 @@ class Announcements(tk.Frame):
 
                     # #Days left text
                     countdown_label = Label(self.sub_countdown_frame, bg='antique white', text=f'({days_left} days left!)' , font=('Arial', 15, 'bold'), fg='red')
-                    countdown_label.grid(row=i+1, column=1)
+                    countdown_label.grid(row=i+2, column=1)
                     i+=1
-
         show_countdown()
 
         #refresh button
         re_countdown_btn=Button(self.countdown_frame, height=1, width=8, text="Refresh", command= show_countdown, font=f)
-        re_countdown_btn.grid(row=1, column=3,  sticky=W, pady=5, padx=45)
+        re_countdown_btn.pack(side='right')
         
 
         #What's new frame
@@ -3545,12 +3512,9 @@ class Announcements(tk.Frame):
         '\n Class Replacement '+ r_set[5], font = ('Arial', 12) ).grid(row=2, column=1, columnspan=2, sticky=W, pady=5) 
 
         #connect to class replace database
-        my_data=('1',)
-        query='SELECT * FROM ClassReplace WHERE id=? '
-
         conn = sqlite3.connect('eventsystem.db')
         cursor=conn.cursor()
-        q_set=cursor.execute(query, my_data)
+        q_set=cursor.execute('''SELECT * FROM ClassReplace ORDER BY ROWID ASC LIMIT 1''')
         q_set=cursor.fetchone()
 
         #replacement of class frame
@@ -5109,39 +5073,41 @@ class Profile(tk.Frame):
             style.theme_use('clam')
             style.configure('Treeview.Heading', font=f)
             style.configure('Treeview', font=('Arial', 13))
+            style.configure('Treeview', rowheight=19)
+
 
             #view all compertitions label
             allcomp_lbl = Label(top, text ='Edit Countdown Event', font = ('Arial', 25,'bold'))
             allcomp_lbl.place(x=210, y=10)
 
-            tree_frame = Frame(top)
-            tree_frame.pack(pady=70)
+            eventtree_frame = Frame(top)
+            eventtree_frame.pack(pady=70)
 
-            tree_scroll = Scrollbar(tree_frame)
+            tree_scroll = Scrollbar(eventtree_frame)
             tree_scroll.pack(side=RIGHT, fill=Y)
 
-            my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode='extended')
-            my_tree.pack()
+            event_tree = ttk.Treeview(eventtree_frame, yscrollcommand=tree_scroll.set, selectmode='extended')
+            event_tree.pack()
 
-            tree_scroll.config(command=my_tree.yview)
+            tree_scroll.config(command=event_tree.yview)
 
-            my_tree['columns'] = ('ID', 'Event Name', 'Year', 'Month', 'Date')
+            event_tree['columns'] = ('ID', 'Event Name', 'Year', 'Month', 'Date')
 
             #format columns
-            my_tree.column('#0', width=0, stretch=NO)
-            my_tree.column('ID', width=30, anchor=CENTER, stretch=NO)
-            my_tree.column('Event Name', width=220, anchor=CENTER, stretch=NO)
-            my_tree.column('Year', width=150, anchor=CENTER, stretch=NO)
-            my_tree.column('Month', width=140, anchor=CENTER, stretch=NO)
-            my_tree.column('Date', width=160, anchor=CENTER, stretch=NO)
+            event_tree.column('#0', width=0, stretch=NO)
+            event_tree.column('ID', width=30, anchor=CENTER, stretch=NO)
+            event_tree.column('Event Name', width=220, anchor=CENTER, stretch=NO)
+            event_tree.column('Year', width=150, anchor=CENTER, stretch=NO)
+            event_tree.column('Month', width=140, anchor=CENTER, stretch=NO)
+            event_tree.column('Date', width=160, anchor=CENTER, stretch=NO)
 
             #column headings
-            my_tree.heading('#0', text='', anchor=W)
-            my_tree.heading('ID', text='ID', anchor=CENTER)
-            my_tree.heading('Event Name', text='Event Name', anchor=CENTER)
-            my_tree.heading('Year', text='Year', anchor=CENTER)
-            my_tree.heading('Month', text='Month', anchor=CENTER)
-            my_tree.heading('Date', text='Date', anchor=CENTER)
+            event_tree.heading('#0', text='', anchor=W)
+            event_tree.heading('ID', text='ID', anchor=CENTER)
+            event_tree.heading('Event Name', text='Event Name', anchor=CENTER)
+            event_tree.heading('Year', text='Year', anchor=CENTER)
+            event_tree.heading('Month', text='Month', anchor=CENTER)
+            event_tree.heading('Date', text='Date', anchor=CENTER)
 
             #show events from db
             conn = sqlite3.connect('eventsystem.db')
@@ -5149,7 +5115,7 @@ class Profile(tk.Frame):
             r_set=c.execute('''SELECT id, EventName, Year, Month, Date from EventCountdown ''')
             r_set=c.fetchall()
             for row in r_set:
-                my_tree.insert("", tk.END, values=row)
+                event_tree.insert("", tk.END, values=row)
 
             #entry boxes for editing db
             id_lbl = Label(top, text='ID', font=f)
@@ -5188,9 +5154,9 @@ class Profile(tk.Frame):
                 
 
                 # Grab the record number
-                selected = my_tree.focus()
+                selected = event_tree.focus()
                 # Grab record values
-                values= my_tree.item(selected, 'values')
+                values= event_tree.item(selected, 'values')
 
                 # outputs to entry boxes
                 id_entry.insert(0, values[0])
@@ -5203,9 +5169,9 @@ class Profile(tk.Frame):
             # Update record
             def save_details():
                 # Grab the record number
-                    selected = my_tree.focus()
+                    selected = event_tree.focus()
                 # Update record
-                    my_tree.item(selected, text="", values=(id_entry.get(),eventname_entry.get(), year_entry.get(), month_entry.get(), date_entry.get()))
+                    event_tree.item(selected, text="", values=(id_entry.get(),eventname_entry.get(), year_entry.get(), month_entry.get(), date_entry.get()))
                     conn=sqlite3.connect('eventsystem.db')
                     c=conn.cursor()
 
@@ -5229,7 +5195,7 @@ class Profile(tk.Frame):
             save_btn=tk.Button(top, height=1, width=6, command=save_details, text='Edit', font=f)
             save_btn.place(x=700,y=360)
 
-            my_tree.bind('<ButtonRelease-1>', show_record)
+            event_tree.bind('<ButtonRelease-1>', show_record)
             
         #delete add to countdown
         def del_countdown_popup():
@@ -5242,39 +5208,40 @@ class Profile(tk.Frame):
             style.theme_use('clam')
             style.configure('Treeview.Heading', font=f)
             style.configure('Treeview', font=('Arial', 13))
+            style.configure('Treeview', rowheight=19)
 
             #view all compertitions label
             allcomp_lbl = Label(top, text ='Delete Countdown Event', font = ('Arial', 25,'bold'))
             allcomp_lbl.place(x=210, y=10)
 
-            tree_frame = Frame(top)
-            tree_frame.pack(pady=70)
+            eventtree_frame = Frame(top)
+            eventtree_frame.pack(pady=70)
 
-            tree_scroll = Scrollbar(tree_frame)
+            tree_scroll = Scrollbar(eventtree_frame)
             tree_scroll.pack(side=RIGHT, fill=Y)
 
-            my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode='extended')
-            my_tree.pack()
+            event_tree = ttk.Treeview(eventtree_frame, yscrollcommand=tree_scroll.set, selectmode='extended')
+            event_tree.pack()
 
-            tree_scroll.config(command=my_tree.yview)
+            tree_scroll.config(command=event_tree.yview)
 
-            my_tree['columns'] = ('ID', 'Event Name', 'Year', 'Month', 'Date')
+            event_tree['columns'] = ('ID', 'Event Name', 'Year', 'Month', 'Date')
 
             #format columns
-            my_tree.column('#0', width=0, stretch=NO)
-            my_tree.column('ID', width=30, anchor=CENTER, stretch=NO)
-            my_tree.column('Event Name', width=220, anchor=CENTER, stretch=NO)
-            my_tree.column('Year', width=150, anchor=CENTER, stretch=NO)
-            my_tree.column('Month', width=140, anchor=CENTER, stretch=NO)
-            my_tree.column('Date', width=160, anchor=CENTER, stretch=NO)
+            event_tree.column('#0', width=0, stretch=NO)
+            event_tree.column('ID', width=30, anchor=CENTER, stretch=NO)
+            event_tree.column('Event Name', width=220, anchor=CENTER, stretch=NO)
+            event_tree.column('Year', width=150, anchor=CENTER, stretch=NO)
+            event_tree.column('Month', width=140, anchor=CENTER, stretch=NO)
+            event_tree.column('Date', width=160, anchor=CENTER, stretch=NO)
 
             #column headings
-            my_tree.heading('#0', text='', anchor=W)
-            my_tree.heading('ID', text='ID', anchor=CENTER)
-            my_tree.heading('Event Name', text='Event Name', anchor=CENTER)
-            my_tree.heading('Year', text='Year', anchor=CENTER)
-            my_tree.heading('Month', text='Month', anchor=CENTER)
-            my_tree.heading('Date', text='Date', anchor=CENTER)
+            event_tree.heading('#0', text='', anchor=W)
+            event_tree.heading('ID', text='ID', anchor=CENTER)
+            event_tree.heading('Event Name', text='Event Name', anchor=CENTER)
+            event_tree.heading('Year', text='Year', anchor=CENTER)
+            event_tree.heading('Month', text='Month', anchor=CENTER)
+            event_tree.heading('Date', text='Date', anchor=CENTER)
 
             #show events from db
             conn = sqlite3.connect('eventsystem.db')
@@ -5282,7 +5249,7 @@ class Profile(tk.Frame):
             r_set=c.execute('''SELECT id, EventName, Year, Month, Date from EventCountdown ''')
             r_set=c.fetchall()
             for row in r_set:
-                my_tree.insert("", tk.END, values=row)
+                event_tree.insert("", tk.END, values=row)
 
             #entry boxes for editing db
             id_lbl = Label(top, text='ID', font=f)
@@ -5321,9 +5288,9 @@ class Profile(tk.Frame):
                 
 
                 # Grab the record number
-                selected = my_tree.focus()
+                selected = event_tree.focus()
                 # Grab record values
-                values= my_tree.item(selected, 'values')
+                values= event_tree.item(selected, 'values')
 
                 # outputs to entry boxes
                 id_entry.insert(0, values[0])
@@ -5335,8 +5302,8 @@ class Profile(tk.Frame):
 
             # Update record
             def del_record():
-                x = my_tree.selection()[0]
-                my_tree.delete(x)
+                x = event_tree.selection()[0]
+                event_tree.delete(x)
 
                 conn = sqlite3.connect('eventsystem.db')
                 c = conn.cursor()
@@ -5365,7 +5332,7 @@ class Profile(tk.Frame):
             del_btn=tk.Button(top,height=1, width=6, font=f, command=del_record, text='Delete')
             del_btn.place(x=700, y=360)
 
-            my_tree.bind('<ButtonRelease-1>', show_record)
+            event_tree.bind('<ButtonRelease-1>', show_record)
             
         add_btn=tk.Button(countdown_frame, height=1, width=7, command=add_countdown_popup, text='Add', font=f)
         add_btn.grid(row=2, column=0,padx=5, pady=5)
