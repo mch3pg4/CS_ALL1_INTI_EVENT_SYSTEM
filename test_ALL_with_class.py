@@ -117,6 +117,8 @@ class App(tk.Tk):
     def updateHomepage(self, login_details):
         frame = self.frames[Homepage]
         frame.lbl_welcome.config(text='Welcome, '+ login_details[0])
+        frame.email.config(text=login_details[2])
+        # frame.regevent_set
         frame.tkraise() 
 
     def updateProfile(self, login_details):
@@ -3170,24 +3172,137 @@ class Homepage(tk.Frame):
         self.lbl_welcome.pack()
         self.lbl_welcome.place(x=40, y=130)
 
+
+        #Registered events frame
+        regevents_frame = Frame(self, bd=2, height=8, width=100, bg='antique white', relief=SOLID)
+        regevents_frame.place(x=40, y=185)
+
+        regevents_title = Label(regevents_frame, text ='Registered Events', font = ('Arial', 20), bg='antique white' )
+        regevents_title.grid(row=0, column=0, sticky=N, pady=5, columnspan=3)
+
+        eventname_lbl = Label(regevents_frame, text ='Event Name', font = ('Arial', 14,'bold'),bg='antique white' )
+        eventname_lbl.grid(row=1, column=0, sticky=W, pady=5, padx=20 )
+
+        date_lbl= Label(regevents_frame, text ='Date', font = ('Arial', 14,'bold'),bg='antique white')
+        date_lbl.grid(row=1, column=1, sticky=W, pady=5, padx=55)
+
+        time_lbl= Label(regevents_frame, text ='Time', font = ('Arial', 14,'bold'),bg='antique white')
+        time_lbl.grid(row=1, column=2, sticky=W, pady=5, padx=55 )
+
+        self.email=Label(text='', font=f)
+        # self.email.place(x=300,y=305)
+        #connect to database to show events
+        conn = sqlite3.connect('eventsystem.db')
+        cursor=conn.cursor()
+        regevent_set=cursor.execute('''SELECT EventRegistrationStudent.EventName, EventRegistrationAdmin.Date, EventRegistrationAdmin.Time
+                                        FROM EventRegistrationStudent
+                                        INNER JOIN EventRegistrationAdmin ON EventRegistrationStudent.EventName = EventRegistrationAdmin.EventName
+                                        WHERE EventRegistrationStudent.email ="nick@gmail.com"''')
+        # e_set=cursor.fetchall()
+        i=0 # row value inside the loop 
+        for EventRegistrationAdmin in regevent_set: 
+            for j in range(len(EventRegistrationAdmin)):
+                eventdetails = tk.Label(regevents_frame, width=18, height=2, font=('Arial', 11),text=EventRegistrationAdmin[j], pady=5, relief='solid', wraplength=180, justify=CENTER) 
+                eventdetails.grid(row=i+2, column=j)
+            i=i+1
+
+        #Registered Competitions frame
+        regcomp_frame = Frame(self, bd=2, height=8, width=100, bg='antique white', relief=SOLID)
+        regcomp_frame.place(x=40, y=500)
+
+        regcomp_title = Label(regcomp_frame, text ='Registered Competitions', font = ('Arial', 20), bg='antique white' )
+        regcomp_title.grid(row=0, column=0, sticky=N, pady=5, columnspan=3)
+
+        compname_lbl = Label(regcomp_frame, text ='Comp Name', font = ('Arial', 14,'bold'),bg='antique white' )
+        compname_lbl.grid(row=1, column=0, sticky=W, pady=5, padx=20 )
+
+        date_lbl= Label(regcomp_frame, text ='Date', font = ('Arial', 14,'bold'),bg='antique white')
+        date_lbl.grid(row=1, column=1, sticky=W, pady=5, padx=55)
+
+        time_lbl= Label(regcomp_frame, text ='Time', font = ('Arial', 14,'bold'),bg='antique white')
+        time_lbl.grid(row=1, column=2, sticky=W, pady=5, padx=55 )
+
+        self.email=Label(text='', font=f)
+        # self.email.place(x=300,y=305)
+        #connect to database to show events
+        conn = sqlite3.connect('eventsystem.db')
+        cursor=conn.cursor()
+        regevent_set=cursor.execute('''SELECT CompRegistrationStudent.CompetitionName, CompRegistrationAdmin.Date, CompRegistrationAdmin.Time
+                                        FROM CompRegistrationStudent
+                                        INNER JOIN CompRegistrationAdmin ON CompRegistrationStudent.CompetitionName = CompRegistrationAdmin.CompetitionName
+                                        WHERE CompRegistrationStudent.email ="nick@gmail.com"''')
+        # e_set=cursor.fetchall()
+        i=0 # row value inside the loop 
+        for CompRegistrationAdmin in regevent_set: 
+            for j in range(len(CompRegistrationAdmin)):
+                compdetails = tk.Label(regcomp_frame, width=18, height=2, font=('Arial', 11),text=CompRegistrationAdmin[j], pady=5, relief='solid', wraplength=180, justify=CENTER) 
+                compdetails.grid(row=i+2, column=j)
+            i=i+1
+
         #Calendar
         cal_frame = Frame(self, bd=1, height=8, width=100, bg='antique white' )
         cal_frame.place(x=725, y=155)
 
+        
         today=datetime.date.today()
-        events_cal = Calendar(cal_frame, font=f, selectmode = 'day', year = today.year, month = today.month, day = today.day, background="SkyBlue1", 
+        events_cal = Calendar(cal_frame, font=f, selectmode = 'day', date_pattern='dd/mm/yyyy', year = today.year, month = today.month, day = today.day, background="SkyBlue1", 
                                             disabledbackground="LightSteelBlue1", bordercolor="black", headersbackground="LightSkyBlue2", normalbackground="DeepSkyBlue2", weekendbackground='DeepSkyBlue3', 
                                                                        selectbackground='black', othermonthbackground='lightblue1', othermonthwebackground='lightblue1', foreground='black', normalforeground='black', weekendforeground='black', headersforeground='black')
         events_cal.pack(fill='both', expand=True)
 
-        def grab_date():
-            date.config(text = "Selected Date is: " + events_cal.get_date(), font=f)
+        event_frame = Frame(self, bd=1, height=8, width=100, bg='antique white' )
+        comp_frame = Frame(self, bd=1, height=8, width=100, bg='antique white' )
+        
+        def show_evnt():
+            #show eventsframe
+            event_frame.pack(side='right', anchor=S, pady=240)
+            comp_frame.forget()
+
+            eventname_lbl = Label(event_frame, text ='Event Name', font = ('Arial', 14,'bold'),bg='antique white' )
+            eventname_lbl.grid(row=1, column=0, sticky=W, pady=5, padx=28 )
+
+            date_lbl= Label(event_frame, text ='Date', font = ('Arial', 14,'bold'),bg='antique white')
+            date_lbl.grid(row=1, column=1, sticky=W, pady=5, padx=55 )
+
+            #connect to database to show events
+            conn = sqlite3.connect('eventsystem.db')
+            cursor=conn.cursor()
+            e_set=cursor.execute('''SELECT EventName,Date FROM EventRegistrationAdmin WHERE  `EventName` LIKE ? OR `Date` LIKE ? LIMIT 0,5''', ('%'+(events_cal.get_date())+'%', '%'+(events_cal.get_date())+'%'))
+            # e_set=cursor.fetchall()
+            i=0 # row value inside the loop 
+            for EventRegistrationAdmin in e_set: 
+                for j in range(len(EventRegistrationAdmin)):
+                    eventdetails = tk.Label(event_frame, width=23, height=2, font=('Arial', 11),text=EventRegistrationAdmin[j], pady=5, relief='solid', wraplength=180, justify=CENTER) 
+                    eventdetails.grid(row=i+2, column=j)
+                i=i+1
+
+        def show_comp():
+            #show compframe
+            comp_frame.pack(side='right', anchor=S, pady=240)
+            event_frame.forget()
+            
+            compname_lbl = Label(comp_frame, text ='Comp Name', font = ('Arial', 14,'bold'),bg='antique white' )
+            compname_lbl.grid(row=1, column=0, sticky=W, pady=5, padx=28 )
+
+            date_lbl= Label(comp_frame, text ='Date', font = ('Arial', 14,'bold'),bg='antique white')
+            date_lbl.grid(row=1, column=1, sticky=W, pady=5, padx=55 )
+
+            #connect to database to show events
+            conn = sqlite3.connect('eventsystem.db')
+            cursor=conn.cursor()
+            c_set=cursor.execute('''SELECT CompetitionName,Date FROM CompRegistrationAdmin WHERE  `CompetitionName` LIKE ? OR `Date` LIKE ? LIMIT 0,5''', ('%'+(events_cal.get_date())+'%', '%'+(events_cal.get_date())+'%'))
+            # e_set=cursor.fetchall()
+            i=0 # row value inside the loop 
+            for CompRegistrationAdmin in c_set: 
+                for j in range(len(CompRegistrationAdmin)):
+                    eventdetails = tk.Label(comp_frame, width=23, height=2, font=('Arial', 11),text=CompRegistrationAdmin[j], pady=5, relief='solid', wraplength=180, justify=CENTER) 
+                    eventdetails.grid(row=i+2, column=j)
+                i=i+1
         
         # Add Button and Label
-        Button(cal_frame, text = "Get Date",command = grab_date, font=f).pack(pady = 5)
-        
-        date = Label(cal_frame, text = "", font=f)
-        date.pack(pady = 5)
+        Button(cal_frame, text = "Show Events",command = show_evnt, font=f).pack(side='left', pady=5,padx=5)
+        Button(cal_frame, text = "Show Comp",command = show_comp, font=f).pack(side='right', pady=5,padx=5)
+
 
 class Announcements(tk.Frame):
     def __init__(self, parent, controller):
@@ -3640,7 +3755,7 @@ class Events(tk.Frame):
 
         # #show event from db
         conn = sqlite3.connect('eventsystem.db')
-        r_set=conn.execute('''SELECT EventName, Date from EventRegistrationAdmin WHERE Date LIKE '% Nov%' OR Date LIKE '%Dec%' OR Date LIKE '%2023%'  LIMIT 0,5''');
+        r_set=conn.execute('''SELECT EventName, Date from EventRegistrationAdmin WHERE Date LIKE '%/11/2022%' OR Date LIKE '%/12/2022%' OR Date LIKE '%/2023%'  LIMIT 0,5''');
         i=0 # row value inside the loop 
         for EventRegistrationAdmin in r_set: 
             for j in range(len(EventRegistrationAdmin)):
