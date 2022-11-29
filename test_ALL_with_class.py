@@ -1,5 +1,4 @@
 import datetime
-import textwrap
 from tkcalendar import Calendar
 from tkinter import *
 from tkinter import filedialog
@@ -73,10 +72,6 @@ def top_buttons(self, controller):
     button5=tk.Button(self, height=1, width=12, text="Profile", font=f, command=lambda: controller.show_frame(Profile))
     button5.place(x=230*4, y=12)
 
-# def resetProfile():
-#     global login_details
-#     login_details.clear()
-#     login_details = None
 
 
 
@@ -117,8 +112,6 @@ class App(tk.Tk):
     def updateHomepage(self, login_details):
         frame = self.frames[Homepage]
         frame.lbl_welcome.config(text='Welcome, '+ login_details[0])
-        frame.email.config(text=login_details[2])
-        # frame.regevent_set
         frame.tkraise() 
 
     def updateProfile(self, login_details):
@@ -3170,74 +3163,113 @@ class Homepage(tk.Frame):
         #Welcome name title
         self.lbl_welcome = Label(self, text ='', font = ('Arial', 20), bg='antique white' )
         self.lbl_welcome.pack()
-        self.lbl_welcome.place(x=40, y=130)
+        self.lbl_welcome.place(x=40, y=115)
 
+        #Activity frame filled with registered events and comp
+        self.activity_frame = Frame(self, height=8, width=100, bg='antique white')
+        self.activity_frame.place(x=40, y=200)
 
         #Registered events frame
-        regevents_frame = Frame(self, bd=2, height=8, width=100, bg='antique white', relief=SOLID)
-        regevents_frame.place(x=40, y=185)
-
-        regevents_title = Label(regevents_frame, text ='Registered Events', font = ('Arial', 20), bg='antique white' )
-        regevents_title.grid(row=0, column=0, sticky=N, pady=5, columnspan=3)
-
-        eventname_lbl = Label(regevents_frame, text ='Event Name', font = ('Arial', 14,'bold'),bg='antique white' )
-        eventname_lbl.grid(row=1, column=0, sticky=W, pady=5, padx=20 )
-
-        date_lbl= Label(regevents_frame, text ='Date', font = ('Arial', 14,'bold'),bg='antique white')
-        date_lbl.grid(row=1, column=1, sticky=W, pady=5, padx=55)
-
-        time_lbl= Label(regevents_frame, text ='Time', font = ('Arial', 14,'bold'),bg='antique white')
-        time_lbl.grid(row=1, column=2, sticky=W, pady=5, padx=55 )
-
-        self.email=Label(text='', font=f)
-        # self.email.place(x=300,y=305)
-        #connect to database to show events
-        conn = sqlite3.connect('eventsystem.db')
-        cursor=conn.cursor()
-        regevent_set=cursor.execute('''SELECT EventRegistrationStudent.EventName, EventRegistrationAdmin.Date, EventRegistrationAdmin.Time
-                                        FROM EventRegistrationStudent
-                                        INNER JOIN EventRegistrationAdmin ON EventRegistrationStudent.EventName = EventRegistrationAdmin.EventName
-                                        WHERE EventRegistrationStudent.email ="nick@gmail.com"''')
-        # e_set=cursor.fetchall()
-        i=0 # row value inside the loop 
-        for EventRegistrationAdmin in regevent_set: 
-            for j in range(len(EventRegistrationAdmin)):
-                eventdetails = tk.Label(regevents_frame, width=18, height=2, font=('Arial', 11),text=EventRegistrationAdmin[j], pady=5, relief='solid', wraplength=180, justify=CENTER) 
-                eventdetails.grid(row=i+2, column=j)
-            i=i+1
+        self.regevents_frame = Frame(self.activity_frame, bd=2, height=8, width=100, bg='antique white', relief=SOLID)
+        self.regevents_frame.pack(pady=1, anchor=W)
 
         #Registered Competitions frame
-        regcomp_frame = Frame(self, bd=2, height=8, width=100, bg='antique white', relief=SOLID)
-        regcomp_frame.place(x=40, y=500)
+        self.regcomp_frame = Frame(self.activity_frame, bd=2, height=8, width=100, bg='antique white', relief=SOLID)
+        self.regcomp_frame.pack(pady=140, anchor=W)
 
-        regcomp_title = Label(regcomp_frame, text ='Registered Competitions', font = ('Arial', 20), bg='antique white' )
+        regcomp_title = Label(self.regcomp_frame, text ='Registered Competitions', font = ('Arial', 20), bg='antique white' )
         regcomp_title.grid(row=0, column=0, sticky=N, pady=5, columnspan=3)
 
-        compname_lbl = Label(regcomp_frame, text ='Comp Name', font = ('Arial', 14,'bold'),bg='antique white' )
+        compname_lbl = Label(self.regcomp_frame, text ='Comp Name', font = ('Arial', 14,'bold'),bg='antique white' )
         compname_lbl.grid(row=1, column=0, sticky=W, pady=5, padx=20 )
 
-        date_lbl= Label(regcomp_frame, text ='Date', font = ('Arial', 14,'bold'),bg='antique white')
+        date_lbl= Label(self.regcomp_frame, text ='Date', font = ('Arial', 14,'bold'),bg='antique white')
         date_lbl.grid(row=1, column=1, sticky=W, pady=5, padx=55)
 
-        time_lbl= Label(regcomp_frame, text ='Time', font = ('Arial', 14,'bold'),bg='antique white')
+        time_lbl= Label(self.regcomp_frame, text ='Time', font = ('Arial', 14,'bold'),bg='antique white')
         time_lbl.grid(row=1, column=2, sticky=W, pady=5, padx=55 )
 
-        self.email=Label(text='', font=f)
-        # self.email.place(x=300,y=305)
-        #connect to database to show events
-        conn = sqlite3.connect('eventsystem.db')
-        cursor=conn.cursor()
-        regevent_set=cursor.execute('''SELECT CompRegistrationStudent.CompetitionName, CompRegistrationAdmin.Date, CompRegistrationAdmin.Time
-                                        FROM CompRegistrationStudent
-                                        INNER JOIN CompRegistrationAdmin ON CompRegistrationStudent.CompetitionName = CompRegistrationAdmin.CompetitionName
-                                        WHERE CompRegistrationStudent.email ="nick@gmail.com"''')
-        # e_set=cursor.fetchall()
-        i=0 # row value inside the loop 
-        for CompRegistrationAdmin in regevent_set: 
-            for j in range(len(CompRegistrationAdmin)):
-                compdetails = tk.Label(regcomp_frame, width=18, height=2, font=('Arial', 11),text=CompRegistrationAdmin[j], pady=5, relief='solid', wraplength=180, justify=CENTER) 
-                compdetails.grid(row=i+2, column=j)
-            i=i+1
+        #get user email from entry
+        getuser_lbl=Label(self, text='Enter email to view \nregistered activites', font=('Arial',12),bg='antique white')
+        getuser_lbl.place(x=40, y=150)
+        useremail=Entry(self, font=f, width=15)
+        useremail.place(x=180, y=160)
+
+        def view_activites():
+            self.regcomp_frame.forget()
+            self.regevents_frame.forget()
+
+            self.regevents_frame = Frame(self.activity_frame, bd=2, height=8, width=100, bg='antique white', relief=SOLID)
+            self.regevents_frame.pack(pady=1, anchor=W)
+            self.regcomp_frame = Frame(self.activity_frame, bd=2, height=8, width=100, bg='antique white', relief=SOLID)
+            self.regcomp_frame.pack(pady=140, anchor=W)
+
+            #registered events columns
+            regevents_title = Label(self.regevents_frame, text ='Registered Events', font = ('Arial', 20), bg='antique white' )
+            regevents_title.grid(row=0, column=0, sticky=N, pady=5, columnspan=3)
+
+            eventname_lbl = Label(self.regevents_frame, text ='Event Name', font = ('Arial', 14,'bold'),bg='antique white' )
+            eventname_lbl.grid(row=1, column=0, sticky=W, pady=5, padx=20 )
+
+            date_lbl= Label(self.regevents_frame, text ='Date', font = ('Arial', 14,'bold'),bg='antique white')
+            date_lbl.grid(row=1, column=1, sticky=W, pady=5, padx=55)
+
+            time_lbl= Label(self.regevents_frame, text ='Time', font = ('Arial', 14,'bold'),bg='antique white')
+            time_lbl.grid(row=1, column=2, sticky=W, pady=5, padx=55 )
+
+            #registered competitions columns
+            regcomp_title = Label(self.regcomp_frame, text ='Registered Competitions', font = ('Arial', 20), bg='antique white' )
+            regcomp_title.grid(row=0, column=0, sticky=N, pady=5, columnspan=3)
+
+            compname_lbl = Label(self.regcomp_frame, text ='Comp Name', font = ('Arial', 14,'bold'),bg='antique white' )
+            compname_lbl.grid(row=1, column=0, sticky=W, pady=5, padx=20 )
+
+            date_lbl= Label(self.regcomp_frame, text ='Date', font = ('Arial', 14,'bold'),bg='antique white')
+            date_lbl.grid(row=1, column=1, sticky=W, pady=5, padx=55)
+
+            time_lbl= Label(self.regcomp_frame, text ='Time', font = ('Arial', 14,'bold'),bg='antique white')
+            time_lbl.grid(row=1, column=2, sticky=W, pady=5, padx=55 )
+            
+            #connect to database to show events
+            email=useremail.get()
+            conn = sqlite3.connect('eventsystem.db')
+            cursor=conn.cursor()
+
+            regevent_set=cursor.execute('''SELECT EventRegistrationStudent.EventName, EventRegistrationAdmin.Date, EventRegistrationAdmin.Time
+                                            FROM EventRegistrationStudent
+                                            INNER JOIN EventRegistrationAdmin ON EventRegistrationStudent.EventName LIKE EventRegistrationAdmin.EventName 
+                                            WHERE EventRegistrationStudent.email =?''',(email,))
+            # e_set=cursor.fetchall()
+            i=0 # row value inside the loop 
+            for EventRegistrationAdmin in regevent_set: 
+                for j in range(len(EventRegistrationAdmin)):
+                    eventdetails = tk.Label(self.regevents_frame, width=18, height=2, font=('Arial', 11),text=EventRegistrationAdmin[j], pady=5, relief='solid', wraplength=180, justify=CENTER) 
+                    eventdetails.grid(row=i+2, column=j)
+                i=i+1
+
+
+            #connect to database to show competitions
+            # conn = sqlite3.connect('eventsystem.db')
+            # cursor=conn.cursor()
+            regcomp_set=cursor.execute('''SELECT CompRegistrationStudent.CompetitionName, CompRegistrationAdmin.Date, CompRegistrationAdmin.Time
+                                            FROM CompRegistrationStudent
+                                            INNER JOIN CompRegistrationAdmin ON CompRegistrationStudent.CompetitionName LIKE CompRegistrationAdmin.CompetitionName
+                                            WHERE CompRegistrationStudent.email =?''',(email,))
+            # e_set=cursor.fetchall()
+            i=0 # row value inside the loop 
+            for CompRegistrationAdmin in regcomp_set: 
+                for j in range(len(CompRegistrationAdmin)):
+                    compdetails = tk.Label(self.regcomp_frame, width=18, height=2, font=('Arial', 11),text=CompRegistrationAdmin[j], pady=5, relief='solid', wraplength=180, justify=CENTER) 
+                    compdetails.grid(row=i+2, column=j)
+                i=i+1
+        view_activites()
+        
+        view_btn=Button(self, text='View', font=f, width=5, height=1, command=view_activites)
+        view_btn.place(x=356, y=150)
+
+        # re_btn = Button(self, text="Refresh", font=f, width=8, height=1, command=view_activites_again)
+        # re_btn.place(x=425, y=150)
+
 
         #Calendar
         cal_frame = Frame(self, bd=1, height=8, width=100, bg='antique white' )
@@ -3726,7 +3758,7 @@ class Announcements(tk.Frame):
 class Events(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg='antique white')
-
+        
         #inti logo
         inti_logo(self)
         #top buttons
@@ -3740,29 +3772,42 @@ class Events(tk.Frame):
         w.pack()
         w.place(x=480, y=80)
 
-        label_1 = Label(self, text="Upcoming Events",width=20,font=('Arial',22),background= "Antique White")
-        label_1.place(x=15,y=130)
+        label_1 = Label(self, text="Upcoming Events",width=20,font=('Arial',20),background= "Antique White")
+        label_1.place(x=10,y=130)
 
         #upcoming events frame
-        upevents_frame = Frame(self, bd=2, bg='AntiqueWhite1', relief=SOLID)
-        upevents_frame.place(x=35, y=170)
+        self.upevents_frame = Frame(self, bd=2, bg='AntiqueWhite1')
+        self.upevents_frame.place(x=35, y=170)
 
-        eventname_lbl = Label(upevents_frame, text ='Event Name', font = ('Arial', 14,'bold'),bg='antique white' )
-        eventname_lbl.grid(row=1, column=0, sticky=W, pady=5, padx=20 )
+        self.sub_upevents_frame = Frame(self.upevents_frame, bd=2, bg='AntiqueWhite1', relief=SOLID)
+        self.sub_upevents_frame.pack(pady=2)
 
-        date_lbl= Label(upevents_frame, text ='Date', font = ('Arial', 14,'bold'),bg='antique white')
-        date_lbl.grid(row=1, column=1, sticky=W, pady=5, padx=55 )
+        def show_upevents():
+            self.sub_upevents_frame.forget()
 
-        # #show event from db
-        conn = sqlite3.connect('eventsystem.db')
-        r_set=conn.execute('''SELECT EventName, Date from EventRegistrationAdmin WHERE Date LIKE '%/11/2022%' OR Date LIKE '%/12/2022%' OR Date LIKE '%/2023%'  LIMIT 0,5''');
-        i=0 # row value inside the loop 
-        for EventRegistrationAdmin in r_set: 
-            for j in range(len(EventRegistrationAdmin)):
-                e = tk.Label(upevents_frame, width=20, height=2, font=('Arial', 11),text=EventRegistrationAdmin[j], pady=5, relief='solid', wraplength=180, justify=CENTER) 
-                e.grid(row=i+2, column=j) 
-            i=i+1
-       
+            self.sub_upevents_frame = Frame(self.upevents_frame, bd=2, bg='AntiqueWhite1', relief=SOLID)
+            self.sub_upevents_frame.pack(pady=2)
+            eventname_lbl = Label(self.sub_upevents_frame, text ='Event Name', font = ('Arial', 14,'bold'),bg='antique white' )
+            eventname_lbl.grid(row=1, column=0, sticky=W, pady=5, padx=20 )
+
+            date_lbl= Label(self.sub_upevents_frame, text ='Date', font = ('Arial', 14,'bold'),bg='antique white')
+            date_lbl.grid(row=1, column=1, sticky=W, pady=5, padx=55 )
+
+            # #show event from db
+            conn = sqlite3.connect('eventsystem.db')
+            r_set=conn.execute('''SELECT EventName, Date from EventRegistrationAdmin WHERE  Date LIKE '%/12/2022%' OR Date LIKE '%/2023%'  LIMIT 0,5''');
+            i=0 # row value inside the loop 
+            for EventRegistrationAdmin in r_set: 
+                for j in range(len(EventRegistrationAdmin)):
+                    e = tk.Label(self.sub_upevents_frame, width=20, height=2, font=('Arial', 11),text=EventRegistrationAdmin[j], pady=5, relief='solid', wraplength=180, justify=CENTER) 
+                    e.grid(row=i+2, column=j) 
+                i=i+1
+        show_upevents()
+
+        #refresh button
+        re_upevents_btn=Button(self,text="Refresh",width=7,font=f, command=show_upevents)
+        re_upevents_btn.place(x=300,y=130)
+
         #events frame
         events_frame=Frame(self, bd=2, bg='Antique white', relief=SOLID)
         events_frame.place(x=450, y=170)
@@ -4869,33 +4914,33 @@ class Profile(tk.Frame):
         #userdetails word
         w = Label(self.userdetails_frame, text ='User Details', font = ('Rockwell', 20), bg='antique white' ).grid(row=0, column=1, sticky=W, pady=5, padx=25, columnspan=2)
         
-        def user_details(self):
-            name_title = Label(self.userdetails_frame, text='Name: ', font=('Arial',15))
-            name_title.grid(row=1, column=0, sticky=W, pady=5)
+        # def user_details(self):
+        name_title = Label(self.userdetails_frame, text='Name: ', font=('Arial',15))
+        name_title.grid(row=1, column=0, sticky=W, pady=5)
 
-            self.lbl_name = Label(self.userdetails_frame, text='',font = ('Arial', 15), bg='antique white' )
-            self.lbl_name.grid(row=1, column=1, sticky=W, pady=5)
+        self.lbl_name = Label(self.userdetails_frame, text='',font = ('Arial', 15), bg='antique white' )
+        self.lbl_name.grid(row=1, column=1, sticky=W, pady=5)
 
-            gender_title = Label(self.userdetails_frame, text='Gender: ', font=('Arial',15))
-            gender_title.grid(row=2, column=0, sticky=W, pady=5)
+        gender_title = Label(self.userdetails_frame, text='Gender: ', font=('Arial',15))
+        gender_title.grid(row=2, column=0, sticky=W, pady=5)
 
-            self.lbl_gender = Label(self.userdetails_frame, text='',font = ('Arial', 15), bg='antique white' )
-            self.lbl_gender.grid(row=2, column=1, sticky=W, pady=5)
+        self.lbl_gender = Label(self.userdetails_frame, text='',font = ('Arial', 15), bg='antique white' )
+        self.lbl_gender.grid(row=2, column=1, sticky=W, pady=5)
 
-            email_title = Label(self.userdetails_frame, text='Email: ', font=('Arial',15))
-            email_title.grid(row=3, column=0, sticky=W, pady=5)
+        email_title = Label(self.userdetails_frame, text='Email: ', font=('Arial',15))
+        email_title.grid(row=3, column=0, sticky=W, pady=5)
 
-            self.lbl_email = Label(self.userdetails_frame, text='',font = ('Arial', 15), bg='antique white' )
-            self.lbl_email.grid(row=3, column=1, sticky=W, pady=5)
+        self.lbl_email = Label(self.userdetails_frame, text='',font = ('Arial', 15), bg='antique white' )
+        self.lbl_email.grid(row=3, column=1, sticky=W, pady=5)
 
-            contact_title = Label(self.userdetails_frame, text='Contact: ', font=('Arial',15))
-            contact_title.grid(row=4, column=0, sticky=W, pady=5)
+        contact_title = Label(self.userdetails_frame, text='Contact: ', font=('Arial',15))
+        contact_title.grid(row=4, column=0, sticky=W, pady=5)
 
-            self.lbl_contact = Label(self.userdetails_frame, text='',font = ('Arial', 15) , bg='antique white')
-            self.lbl_contact.grid(row=4, column=1, sticky=W, pady=5)
+        self.lbl_contact = Label(self.userdetails_frame, text='',font = ('Arial', 15) , bg='antique white')
+        self.lbl_contact.grid(row=4, column=1, sticky=W, pady=5)
 
-            #edit details popup
-            def editdetails_popup():
+        #edit details popup
+        def editdetails_popup():
                     top= Toplevel(ws)
                     top.geometry("300x300")
                     top.title("Edit Details")
@@ -4972,17 +5017,17 @@ class Profile(tk.Frame):
                     save_btn.grid(row=5, column=1, sticky=W, pady=5)
                     
 
-            #edit details button
-            editdetails_btn=tk.Button(self.userdetails_frame, height=1, width=10, text="Edit details", command=editdetails_popup, font=f)
-            editdetails_btn.grid(row=7, column=1, sticky=W, pady=5, padx=5)
+        #edit details button
+        editdetails_btn=tk.Button(self.userdetails_frame, height=1, width=10, text="Edit details", command=editdetails_popup, font=f)
+        editdetails_btn.grid(row=7, column=1, sticky=W, pady=5, padx=5)
 
-        #refresh details
-        def refresh_details(self):
-            user_details(self)
+        # #refresh details
+        # def refresh_details(self):
+        #     user_details(self)
 
-        #refresh details button
-        redetails_btn=tk.Button(self.userdetails_frame, height=1, width=6, text="Refresh", command=refresh_details(self), font=f)
-        redetails_btn.grid(row=0, column=0, sticky=W, pady=5, padx=20)
+        # #refresh details button
+        # redetails_btn=tk.Button(self.userdetails_frame, height=1, width=6, text="Refresh", command=refresh_details(self), font=f)
+        # redetails_btn.grid(row=0, column=0, sticky=W, pady=5, padx=20)
 
         #helpdesk frame
         helpdesk_frame = Frame(self, bd=2, bg='antique white', relief=SOLID)
