@@ -188,32 +188,10 @@ class Loginpage(tk.Frame):
         page_title.place(x=290, y=250)
 
         # widgets
-        left_frame = Frame(
-        self, 
-        bd=2, 
-        bg='salmon',   
-        relief=SOLID, 
-        padx=10, 
-        pady=-1000
-        )
-
-        Label(
-        left_frame, 
-        text="Enter Email", 
-        bg='salmon2',
-        font=f).grid(row=0, column=0, sticky=W, pady=10)
-
-        Label(
-        left_frame, 
-        text="Enter Password", 
-        bg='salmon2',
-        font=f
-        ).grid(row=1, column=0, pady=10)
-
-        email_tf = Entry(
-        left_frame, 
-        font=f
-        )
+        left_frame = Frame(self, bd=2, bg='salmon',   relief=SOLID, padx=10, pady=-1000)
+        Label(left_frame, text="Enter Email", bg='salmon2',font=f).grid(row=0, column=0, sticky=W, pady=10)
+        Label(left_frame, text="Enter Password", bg='salmon2',font=f).grid(row=1, column=0, pady=10)
+        email_tf = Entry(left_frame, font=f)
 
         #show/hide password
         def toggle_password():
@@ -228,19 +206,7 @@ class Loginpage(tk.Frame):
         pwd_btn=Button(self, text='Show', width=4, font=('Arial', 9), command=toggle_password)
         pwd_btn.place(x=659, y=382)
         
-
-        login_btn = Button(
-            left_frame, 
-            width=15, 
-            text='Login', 
-            font=f, 
-            relief=SOLID,
-            cursor='hand2',
-            command=login_response
-            )
-
-
-
+        login_btn = Button(left_frame, width=15, text='Login', font=f, relief=SOLID,cursor='hand2',command=login_response)
 
         # widgets placement
         email_tf.grid(row=0, column=1, pady=10, padx=20)
@@ -266,8 +232,6 @@ class RegisterPage(tk.Frame):
         login_link_btn = Button(self, text= "Go to Login Page", cursor= "hand2", font= ('Arial', 18), command=go_to_login)
         login_link_btn.place(x=410,y=645)
         
-
-
         #connect to database
         con = sqlite3.connect('eventsystem.db')
         cur=con.cursor()
@@ -284,7 +248,6 @@ class RegisterPage(tk.Frame):
         var1.set(None)
         var2=StringVar()
         var2.set(None)
-
 
         def insert_record():
             check_counter=0
@@ -361,66 +324,15 @@ class RegisterPage(tk.Frame):
         page_title.pack()
         page_title.place(x=303, y=65)
 
-
         #register frame
-        right_frame = Frame(
-            self, 
-            bd=2, 
-            bg='salmon',
-            relief=SOLID, 
-            padx=10, 
-            pady=-1000
-            )
-
-        Label(
-            right_frame, 
-            text="Enter Name", 
-            bg='salmon2',
-            font=f
-            ).grid(row=0, column=0, sticky=W, pady=10)
-
-        Label(
-            right_frame, 
-            text="Enter ID", 
-            bg='salmon2',
-            font=f
-            ).grid(row=1, column=0, sticky=W, pady=10)
-
-        Label(
-            right_frame, 
-            text="Enter Email", 
-            bg='salmon2',
-            font=f
-            ).grid(row=2, column=0, sticky=W, pady=10)
-
-        Label(
-            right_frame, 
-            text="Contact Number", 
-            bg='salmon2',
-            font=f
-            ).grid(row=3, column=0, sticky=W, pady=10)
-
-        Label(
-            right_frame,
-            text="Select User Type",
-            bg='salmon2',
-            font=f
-            ).grid(row=4, column=0, sticky =W, pady=10)
-
-        Label(
-            right_frame, 
-            text="Select Gender", 
-            bg='salmon2',
-            font=f
-            ).grid(row=5, column=0, sticky=W, pady=10)
-
-        Label(
-            right_frame, 
-            text="Enter Password", 
-            bg='salmon2',
-            font=f
-            ).grid(row=6, column=0, sticky=W, pady=10)
-
+        right_frame = Frame(self, bd=2, bg='salmon',relief=SOLID, padx=10, pady=-1000)
+        Label(right_frame, text="Enter Name", bg='salmon2',font=f).grid(row=0, column=0, sticky=W, pady=10)
+        Label(right_frame, text="Enter ID", bg='salmon2',font=f).grid(row=1, column=0, sticky=W, pady=10)
+        Label(right_frame, text="Enter Email", bg='salmon2',font=f).grid(row=2, column=0, sticky=W, pady=10)
+        Label(right_frame, text="Contact Number", bg='salmon2',font=f).grid(row=3, column=0, sticky=W, pady=10)
+        Label(right_frame,text="Select User Type",bg='salmon2',font=f).grid(row=4, column=0, sticky =W, pady=10)
+        Label(right_frame, text="Select Gender", bg='salmon2',font=f).grid(row=5, column=0, sticky=W, pady=10)
+        Label(right_frame, text="Enter Password", bg='salmon2',font=f).grid(row=6, column=0, sticky=W, pady=10)
         
         #show/hide password
         def toggle_password2():
@@ -447,118 +359,21 @@ class RegisterPage(tk.Frame):
         pwd_btn3=Button(self, text='Show', width=4, font=('Arial', 9), command=toggle_password3)
         pwd_btn3.place(x=690, y=523)
 
-        Label(
-            right_frame, 
-            text="Re-Enter Password", 
-            bg='salmon2',
-            font=f
-            ).grid(row=7, column=0, sticky=W, pady=10)
-
-        usertype_frame = LabelFrame(
-            right_frame,
-            bg='#CCCCCC',
-            padx=10, 
-            pady=10,
-            )
-
-
-        gender_frame = LabelFrame(
-            right_frame,
-            bg='#CCCCCC',
-            padx=10, 
-            pady=10,
-            )
-
-
-        register_name = Entry(
-            right_frame, 
-            font=f
-            )
-
-        register_userid = Entry(
-            right_frame,
-            font=f
-            )
-
-        register_email = Entry(
-            right_frame, 
-            font=f
-            )
-
-        register_mobile = Entry(
-            right_frame, 
-            font=f
-            )
-
-        user_rb = Radiobutton(
-            usertype_frame,
-            text='User',
-            bg='#CCCCCC',
-            variable=var1,
-            value='user',
-            font=('Arial',10)
-        )
-
-        admin_rb = Radiobutton(
-            usertype_frame,
-            text='Admin',
-            bg='#CCCCCC',
-            variable=var1,
-            value='admin',
-            font=('Arial',10)
-        )
-
-        male_rb = Radiobutton(
-            gender_frame, 
-            text='Male',
-            bg='#CCCCCC',
-            variable=var2,
-            value='male',
-            font=('Arial', 10),
-            
-        )
-
-        female_rb = Radiobutton(
-            gender_frame,
-            text='Female',
-            bg='#CCCCCC',
-            variable=var2,
-            value='female',
-            font=('Arial', 10),
-        
-        )
-
-        others_rb = Radiobutton(
-            gender_frame,
-            text='Others',
-            bg='#CCCCCC',
-            variable=var2,
-            value='others',
-            font=('Arial', 10)
-        
-        )
-
-        register_pwd = Entry(
-            right_frame, 
-            font=f,
-            show='*'
-
-        )
-        pwd_again = Entry(
-            right_frame, 
-            font=f,
-            show='*'
-        )
-
-        register_btn = Button(
-            right_frame, 
-            width=15, 
-            text='Register', 
-            font=f, 
-            relief=SOLID,
-            cursor='hand2',
-            command= insert_record,
-        )
+        Label(right_frame, text="Re-Enter Password", bg='salmon2',font=f ).grid(row=7, column=0, sticky=W, pady=10)
+        usertype_frame = LabelFrame(right_frame,bg='#CCCCCC',padx=10, pady=10,)
+        gender_frame = LabelFrame(right_frame,bg='#CCCCCC',padx=10, pady=10,)
+        register_name = Entry(right_frame, font=f)
+        register_userid = Entry(right_frame,font=f)
+        register_email = Entry(right_frame, font=f)
+        register_mobile = Entry(right_frame, font=f)
+        user_rb = Radiobutton(usertype_frame,text='User',bg='#CCCCCC',variable=var1,value='user',font=('Arial',10))
+        admin_rb = Radiobutton(usertype_frame,text='Admin',bg='#CCCCCC',variable=var1,value='admin',font=('Arial',10))
+        male_rb = Radiobutton(gender_frame, text='Male',bg='#CCCCCC',variable=var2,value='male',font=('Arial', 10),)
+        female_rb = Radiobutton(gender_frame,text='Female',bg='#CCCCCC',variable=var2,value='female',font=('Arial', 10))
+        others_rb = Radiobutton(gender_frame,text='Others',bg='#CCCCCC',variable=var2,value='others',font=('Arial', 10))
+        register_pwd = Entry(right_frame, font=f,show='*')
+        pwd_again = Entry(right_frame, font=f,show='*')
+        register_btn = Button(right_frame, width=15, text='Register', font=f, relief=SOLID,cursor='hand2',command= insert_record)
 
         #widgets placement
         register_name.grid(row=0, column=1, pady=10, padx=20)
@@ -1815,8 +1630,6 @@ class Adminpage(tk.Frame):
             #show competitions frame button
             showcomp_btn=tk.Button(eventtable_frame,height=1, width=15, font=('Arial', 13), text='Show Competitions', command=show_competitions)
             showcomp_btn.grid(row=11, column=4, sticky=W, pady=5, padx=10, columnspan=5)
-
-
 
         #show competitions frame
         def show_competitions():
@@ -3124,8 +2937,6 @@ class Adminpage(tk.Frame):
         delete_classreplace_btn = tk.Button(whatnew_frame,height=1, width=7, font=f, text='Delete', command=del_classreplace)
         delete_classreplace_btn.grid(row=4, column=3, sticky=W, pady=5, padx=10)
 
-        #show users registered events
-
         #admin view as normal user
         def view_user():
             controller.show_frame(Homepage)
@@ -3239,7 +3050,6 @@ class Homepage(tk.Frame):
                                             FROM EventRegistrationStudent
                                             INNER JOIN EventRegistrationAdmin ON EventRegistrationStudent.EventName LIKE EventRegistrationAdmin.EventName 
                                             WHERE EventRegistrationStudent.email =?''',(email,))
-            # e_set=cursor.fetchall()
             i=0 # row value inside the loop 
             for EventRegistrationAdmin in regevent_set: 
                 for j in range(len(EventRegistrationAdmin)):
@@ -3249,8 +3059,6 @@ class Homepage(tk.Frame):
 
 
             #connect to database to show competitions
-            # conn = sqlite3.connect('eventsystem.db')
-            # cursor=conn.cursor()
             regcomp_set=cursor.execute('''SELECT CompRegistrationStudent.CompetitionName, CompRegistrationAdmin.Date, CompRegistrationAdmin.Time
                                             FROM CompRegistrationStudent
                                             INNER JOIN CompRegistrationAdmin ON CompRegistrationStudent.CompetitionName LIKE CompRegistrationAdmin.CompetitionName
@@ -3267,10 +3075,6 @@ class Homepage(tk.Frame):
         view_btn=Button(self, text='View', font=f, width=5, height=1, command=view_activites)
         view_btn.place(x=356, y=150)
 
-        # re_btn = Button(self, text="Refresh", font=f, width=8, height=1, command=view_activites_again)
-        # re_btn.place(x=425, y=150)
-
-
         #Calendar
         cal_frame = Frame(self, bd=1, height=8, width=100, bg='antique white' )
         cal_frame.place(x=725, y=155)
@@ -3278,8 +3082,10 @@ class Homepage(tk.Frame):
         
         today=datetime.date.today()
         events_cal = Calendar(cal_frame, font=f, selectmode = 'day', date_pattern='dd/mm/yyyy', year = today.year, month = today.month, day = today.day, background="SkyBlue1", 
-                                            disabledbackground="LightSteelBlue1", bordercolor="black", headersbackground="LightSkyBlue2", normalbackground="DeepSkyBlue2", weekendbackground='DeepSkyBlue3', 
-                                                                       selectbackground='black', othermonthbackground='lightblue1', othermonthwebackground='lightblue1', foreground='black', normalforeground='black', weekendforeground='black', headersforeground='black')
+                                            disabledbackground="LightSteelBlue1", bordercolor="black", headersbackground="LightSkyBlue2", 
+                                            normalbackground="DeepSkyBlue2", weekendbackground='DeepSkyBlue3', 
+                                            electbackground='black', othermonthbackground='lightblue1', othermonthwebackground='lightblue1', 
+                                            foreground='black', normalforeground='black', weekendforeground='black', headersforeground='black')
         events_cal.pack(fill='both', expand=True)
 
         event_frame = Frame(self, bd=1, height=8, width=100, bg='antique white' )
@@ -3300,7 +3106,6 @@ class Homepage(tk.Frame):
             conn = sqlite3.connect('eventsystem.db')
             cursor=conn.cursor()
             e_set=cursor.execute('''SELECT EventName,Date FROM EventRegistrationAdmin WHERE  `EventName` LIKE ? OR `Date` LIKE ? LIMIT 0,5''', ('%'+(events_cal.get_date())+'%', '%'+(events_cal.get_date())+'%'))
-            # e_set=cursor.fetchall()
             i=0 # row value inside the loop 
             for EventRegistrationAdmin in e_set: 
                 for j in range(len(EventRegistrationAdmin)):
@@ -3323,7 +3128,6 @@ class Homepage(tk.Frame):
             conn = sqlite3.connect('eventsystem.db')
             cursor=conn.cursor()
             c_set=cursor.execute('''SELECT CompetitionName,Date FROM CompRegistrationAdmin WHERE  `CompetitionName` LIKE ? OR `Date` LIKE ? LIMIT 0,5''', ('%'+(events_cal.get_date())+'%', '%'+(events_cal.get_date())+'%'))
-            # e_set=cursor.fetchall()
             i=0 # row value inside the loop 
             for CompRegistrationAdmin in c_set: 
                 for j in range(len(CompRegistrationAdmin)):
@@ -3331,7 +3135,7 @@ class Homepage(tk.Frame):
                     eventdetails.grid(row=i+2, column=j)
                 i=i+1
         
-        # Add Button and Label
+        # Show Button and Label
         Button(cal_frame, text = "Show Events",command = show_evnt, font=f).pack(side='left', pady=5,padx=5)
         Button(cal_frame, text = "Show Comp",command = show_comp, font=f).pack(side='right', pady=5,padx=5)
 
@@ -3584,8 +3388,7 @@ class Announcements(tk.Frame):
 
             #registration form widgets
             label_0 = Label(top, text=" Event Registration Form",width=20,font=("bold", 22))
-            label_0.place(x=85,y=30)
-                    
+            label_0.place(x=85,y=30)   
                     
             label_1 = Label(top, text="Full Name",width=20,font=("bold", 10))
             label_1.place(x=75,y=100)
@@ -3943,8 +3746,7 @@ class Events(tk.Frame):
             #registration form widgets
             label_0 = Label(top, text=" Event Registration Form",width=20,font=("bold", 22))
             label_0.place(x=85,y=30)
-                    
-                    
+                        
             label_1 = Label(top, text="Full Name",width=20,font=("bold", 10))
             label_1.place(x=75,y=100)
                     
@@ -4332,7 +4134,7 @@ class Competitions(tk.Frame):
             #column headings
             my_tree.heading('#0', text='', anchor=W)
             # my_tree.heading('ID', text='ID', anchor=CENTER)
-            my_tree.heading('Comp Name', text='Event Name', anchor=CENTER)
+            my_tree.heading('Comp Name', text='Comp Name', anchor=CENTER)
             my_tree.heading('Date', text='Date', anchor=CENTER)
             my_tree.heading('Time', text='Time', anchor=CENTER)
             my_tree.heading('Location', text='Location', anchor=CENTER)
@@ -4350,7 +4152,8 @@ class Competitions(tk.Frame):
                 my_tree.delete(*my_tree.get_children())
                 conn = sqlite3.connect("eventsystem.db")
                 c = conn.cursor()
-                r_set=c.execute("SELECT CompetitionName, Date, Time, Location, CompetitionType FROM `CompRegistrationAdmin` WHERE `CompetitionName` LIKE ? OR `Date` LIKE ? OR `Time` LIKE ? OR `Location` LIKE ? OR `CompetitionType` LIKE  ?", ('%'+(search_entry.get())+'%', '%'+(search_entry.get())+'%', '%'+(search_entry.get())+'%', '%'+(search_entry.get())+'%', '%'+(search_entry.get())+'%'))
+                r_set=c.execute("SELECT CompetitionName, Date, Time, Location, CompetitionType FROM `CompRegistrationAdmin` WHERE `CompetitionName` LIKE ? OR `Date` LIKE ? OR `Time` LIKE ? OR `Location` LIKE ? OR `CompetitionType` LIKE  ?"
+                                    , ('%'+(search_entry.get())+'%', '%'+(search_entry.get())+'%', '%'+(search_entry.get())+'%', '%'+(search_entry.get())+'%', '%'+(search_entry.get())+'%'))
                 r_set = c.fetchall()
                 for data in r_set:
                     my_tree.insert('', 'end', values=(data))
@@ -4489,7 +4292,7 @@ class Competitions(tk.Frame):
                                     'ContactNo':Contact1.get()
                                     })
                                     conn.commit()
-                                    messagebox.showinfo('Confirmation', 'Event Registered')
+                                    messagebox.showinfo('Confirmation', 'Competition Registered')
                                     top.destroy()
 
                                 except Exception as ep:
@@ -4960,7 +4763,6 @@ class Profile(tk.Frame):
                     w = Label(top, text ='Password: ', font = ('Arial', 15) )
                     w.grid(row=4, column=0, sticky=W, pady=5)
 
-                    
                     edit_name_entry = tk.Entry(top, font=f,  width=15)
                     edit_name_entry.grid(row=0, column=1, sticky=W, pady=5)
                     edit_email_entry = tk.Entry(top, font=f,  width=15)
@@ -5021,13 +4823,6 @@ class Profile(tk.Frame):
         editdetails_btn=tk.Button(self.userdetails_frame, height=1, width=10, text="Edit details", command=editdetails_popup, font=f)
         editdetails_btn.grid(row=7, column=1, sticky=W, pady=5, padx=5)
 
-        # #refresh details
-        # def refresh_details(self):
-        #     user_details(self)
-
-        # #refresh details button
-        # redetails_btn=tk.Button(self.userdetails_frame, height=1, width=6, text="Refresh", command=refresh_details(self), font=f)
-        # redetails_btn.grid(row=0, column=0, sticky=W, pady=5, padx=20)
 
         #helpdesk frame
         helpdesk_frame = Frame(self, bd=2, bg='antique white', relief=SOLID)
@@ -5191,14 +4986,14 @@ class Profile(tk.Frame):
             cntdwn_title= Label(top, text='Add to Countdown Page', font=("Arial", 18))
             cntdwn_title.grid(row=0, column=0, sticky=W, pady=5, columnspan=4)
 
-            evntname_lbl= Label(top, text=' Event Name', font=f)
-            evntname_lbl.grid(row=1, column=0, sticky=W, pady=5, columnspan=4)
+            actname_lbl= Label(top, text=' Activity Name', font=f)
+            actname_lbl.grid(row=1, column=0, sticky=W, pady=5, columnspan=4)
 
             name = Entry(top, font=f, width=18)
             name.grid(row=1, column=1, sticky=W, pady=5, columnspan=4)
 
-            evntdate_lbl= Label(top, text='Event Date \nYYYY/MM/DD', font=f)
-            evntdate_lbl.grid(row=2, column=0, sticky=W, pady=5)
+            actdate_lbl= Label(top, text='Activity Date \nYYYY/MM/DD', font=f)
+            actdate_lbl.grid(row=2, column=0, sticky=W, pady=5)
 
             year_lbl=Label(top, text='Year(YYYY)', font=('Arial', 10))
             year_lbl.grid(row=3, column=1, sticky=W, pady=5)
@@ -5219,14 +5014,14 @@ class Profile(tk.Frame):
             date.grid(row=2, column=3, sticky=W, pady=5)
 
 
-            add_event_btn=tk.Button(top,height=1,width=9, command=insert_record, text='Add Event', font=f)
+            add_event_btn=tk.Button(top,height=1,width=11, command=insert_record, text='Add Activity', font=f)
             add_event_btn.grid(row=4, column=1,sticky=W, pady=5, columnspan=4)
 
         #edit countdown box
         def edit_countdown_popup():
             top = Toplevel(ws)
             top.geometry('800x450')
-            top.title("Edit Countdown Event")
+            top.title("Edit Countdown Activity")
             top.resizable(False,False)
 
             style=ttk.Style()
@@ -5237,7 +5032,7 @@ class Profile(tk.Frame):
 
 
             #view all compertitions label
-            allcomp_lbl = Label(top, text ='Edit Countdown Event', font = ('Arial', 25,'bold'))
+            allcomp_lbl = Label(top, text ='Edit Countdown Activity', font = ('Arial', 25,'bold'))
             allcomp_lbl.place(x=210, y=10)
 
             eventtree_frame = Frame(top)
@@ -5251,12 +5046,12 @@ class Profile(tk.Frame):
 
             tree_scroll.config(command=event_tree.yview)
 
-            event_tree['columns'] = ('ID', 'Event Name', 'Year', 'Month', 'Date')
+            event_tree['columns'] = ('ID', 'Activity Name', 'Year', 'Month', 'Date')
 
             #format columns
             event_tree.column('#0', width=0, stretch=NO)
             event_tree.column('ID', width=30, anchor=CENTER, stretch=NO)
-            event_tree.column('Event Name', width=220, anchor=CENTER, stretch=NO)
+            event_tree.column('Activity Name', width=220, anchor=CENTER, stretch=NO)
             event_tree.column('Year', width=150, anchor=CENTER, stretch=NO)
             event_tree.column('Month', width=140, anchor=CENTER, stretch=NO)
             event_tree.column('Date', width=160, anchor=CENTER, stretch=NO)
@@ -5264,7 +5059,7 @@ class Profile(tk.Frame):
             #column headings
             event_tree.heading('#0', text='', anchor=W)
             event_tree.heading('ID', text='ID', anchor=CENTER)
-            event_tree.heading('Event Name', text='Event Name', anchor=CENTER)
+            event_tree.heading('Activity Name', text='Activity Name', anchor=CENTER)
             event_tree.heading('Year', text='Year', anchor=CENTER)
             event_tree.heading('Month', text='Month', anchor=CENTER)
             event_tree.heading('Date', text='Date', anchor=CENTER)
@@ -5283,7 +5078,7 @@ class Profile(tk.Frame):
             id_entry = Entry(top, width=5, font=f)
             id_entry.place(x=150, y=320)
 
-            eventname_lbl = Label(top, text="Event Name", font=f)
+            eventname_lbl = Label(top, text="Activity Name", font=f)
             eventname_lbl.place(x=35, y=360)
             eventname_entry = Entry(top, width=16, font=f)
             eventname_entry.place(x=150,y=360)
@@ -5361,7 +5156,7 @@ class Profile(tk.Frame):
         def del_countdown_popup():
             top = Toplevel(ws)
             top.geometry('800x450')
-            top.title("Delete Countdown Event")
+            top.title("Delete Countdown Activity")
             top.resizable(False,False)
 
             style=ttk.Style()
@@ -5371,7 +5166,7 @@ class Profile(tk.Frame):
             style.configure('Treeview', rowheight=19)
 
             #view all compertitions label
-            allcomp_lbl = Label(top, text ='Delete Countdown Event', font = ('Arial', 25,'bold'))
+            allcomp_lbl = Label(top, text ='Delete Countdown Activity', font = ('Arial', 25,'bold'))
             allcomp_lbl.place(x=210, y=10)
 
             eventtree_frame = Frame(top)
@@ -5385,12 +5180,12 @@ class Profile(tk.Frame):
 
             tree_scroll.config(command=event_tree.yview)
 
-            event_tree['columns'] = ('ID', 'Event Name', 'Year', 'Month', 'Date')
+            event_tree['columns'] = ('ID', 'Activity Name', 'Year', 'Month', 'Date')
 
             #format columns
             event_tree.column('#0', width=0, stretch=NO)
             event_tree.column('ID', width=30, anchor=CENTER, stretch=NO)
-            event_tree.column('Event Name', width=220, anchor=CENTER, stretch=NO)
+            event_tree.column('Activity Name', width=220, anchor=CENTER, stretch=NO)
             event_tree.column('Year', width=150, anchor=CENTER, stretch=NO)
             event_tree.column('Month', width=140, anchor=CENTER, stretch=NO)
             event_tree.column('Date', width=160, anchor=CENTER, stretch=NO)
@@ -5398,7 +5193,7 @@ class Profile(tk.Frame):
             #column headings
             event_tree.heading('#0', text='', anchor=W)
             event_tree.heading('ID', text='ID', anchor=CENTER)
-            event_tree.heading('Event Name', text='Event Name', anchor=CENTER)
+            event_tree.heading('Activity Name', text='Activity Name', anchor=CENTER)
             event_tree.heading('Year', text='Year', anchor=CENTER)
             event_tree.heading('Month', text='Month', anchor=CENTER)
             event_tree.heading('Date', text='Date', anchor=CENTER)
@@ -5417,7 +5212,7 @@ class Profile(tk.Frame):
             id_entry = Entry(top, width=5, font=f)
             id_entry.place(x=150, y=320)
 
-            eventname_lbl = Label(top, text="Event Name", font=f)
+            eventname_lbl = Label(top, text="Activity Name", font=f)
             eventname_lbl.place(x=35, y=360)
             eventname_entry = Entry(top, width=16, font=f)
             eventname_entry.place(x=150,y=360)
